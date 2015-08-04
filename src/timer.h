@@ -2,7 +2,7 @@
 
 #include <functional>
 
-namespace curlpp {
+namespace curlion {
 
 /**
  Timer is an interface used by ConnectionManager to trigger a notification after a period of time.

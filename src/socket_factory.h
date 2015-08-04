@@ -3,7 +3,7 @@
 #include <memory>
 #include <curl/curl.h>
 
-namespace curlpp {
+namespace curlion {
 
 /**
  SocketFactory is an interface used by Connection to open and close sockets.

@@ -4,7 +4,7 @@
 #include "socket_watcher.h"
 #include "timer.h"
 
-namespace curlpp {
+namespace curlion {
     
 static inline LoggerProxy WriteManagerLog(void* manager_idenditifier) {
     return Log() << "Manager(" << manager_idenditifier << "): ";

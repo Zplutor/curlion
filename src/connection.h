@@ -5,7 +5,7 @@
 #include <string>
 #include <curl/curl.h>
 
-namespace curlpp {
+namespace curlion {
 
 class SocketFactory;
 

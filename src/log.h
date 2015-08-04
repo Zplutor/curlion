@@ -1,7 +1,7 @@
 #pragma once
 
 /**
- CURLPP_VERBOSE macro controls whether to print debug information to stdout.
+ CURLION_VERBOSE macro controls whether to print debug information to stdout.
  Enable it by changing its value to none zero.
  
  Be aware of that enabling this macro would produce much output that flood the console easily.
@@ -9,22 +9,22 @@
  
  This macro effects only when NDEBUG macro is not defined.
  */
-#define CURLPP_VERBOSE 0
+#define CURLION_VERBOSE 0
 
-#if (! defined(NDEBUG)) && (CURLPP_VERBOSE)
+#if (! defined(NDEBUG)) && (CURLION_VERBOSE)
 #include <memory>
 #include <iostream>
 #include <sstream>
 #endif
 
-namespace curlpp {
+namespace curlion {
     
-#if (! defined(NDEBUG)) && (CURLPP_VERBOSE)
+#if (! defined(NDEBUG)) && (CURLION_VERBOSE)
     
 class Logger {
 public:
     void Write(const std::string& log) {
-        std::cout << "curlpp> " << log << std::endl;
+        std::cout << "curlion> " << log << std::endl;
     }
 };
 

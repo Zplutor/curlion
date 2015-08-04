@@ -2,7 +2,7 @@
 #include "socket_factory.h"
 #include "log.h"
 
-namespace curlpp {
+namespace curlion {
 
 static inline LoggerProxy WriteConnectionLog(void* connection_identifier) {
     return Log() << "Connection(" << connection_identifier << "): ";

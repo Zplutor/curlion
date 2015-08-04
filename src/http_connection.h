@@ -4,7 +4,7 @@
 #include <string>
 #include "connection.h"
 
-namespace curlpp {
+namespace curlion {
 
 /**
  HttpConnection used to send HTTP request and received HTTP response.

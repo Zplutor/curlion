@@ -3,7 +3,7 @@
 #include <functional>
 #include <curl/curl.h>
 
-namespace curlpp {
+namespace curlion {
 
 /**
  SocketWatcher is an interface used by ConnectionManager to trigger a notification when a socket 

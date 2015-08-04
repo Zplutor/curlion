@@ -2,9 +2,9 @@
 #include <memory>
 #include <iostream>
 #include <boost/asio.hpp>
-#include <curlpp.h>
+#include <curlion.h>
 
-using namespace curlpp;
+using namespace curlion;
 
 class AsioTimer : public Timer {
 public:

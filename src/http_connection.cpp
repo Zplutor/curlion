@@ -1,7 +1,7 @@
 #include "http_connection.h"
 #include <vector>
 
-namespace curlpp {
+namespace curlion {
 
 static std::string MakeHttpHeaderLine(const std::string& field, const std::string& value);
 static std::vector<std::string> SplitString(const std::string& string, const std::string& delimiter);

@@ -4,7 +4,7 @@
 #include <memory>
 #include <curl/curl.h>
 
-namespace curlpp {
+namespace curlion {
 
 class Connection;
 class SocketWatcher;
