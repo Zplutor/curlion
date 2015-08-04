@@ -6,6 +6,9 @@
 
 using namespace curlion;
 
+/**
+ The curlion::Timer implementation with boost::aio::deadline_timer.
+ */
 class AsioTimer : public Timer {
 public:
     explicit AsioTimer(boost::asio::io_service& io_service) : timer_(io_service) {
@@ -38,6 +41,11 @@ private:
 };
 
 
+/**
+ An event watcher for a single socket.
+ 
+ This class simulates a continual watching on the socket, with one-shot watching method of asio.
+ */
 class AsioSingleSocketWatcher : public std::enable_shared_from_this<AsioSingleSocketWatcher> {
 public:
     AsioSingleSocketWatcher(const std::shared_ptr<boost::asio::ip::tcp::socket>& socket,
@@ -57,8 +65,13 @@ public:
     }
     
     void Stop() {
-        
+
+        //Stop may be called inside an event callback, so a flag variable
+        //is needed for stopping the watching.
         is_stopped_ = true;
+        
+        //The socket may be closed before calling Stop, check for
+        //preventing exception.
         if (socket_->is_open()) {
             socket_->cancel();
         }
@@ -103,6 +116,7 @@ private:
         
         callback_(socket_->native_handle(), can_write);
      
+        //End watching once stopped.
         if (! is_stopped_) {
             Watch();
         }
@@ -116,6 +130,9 @@ private:
 };
 
 
+/**
+ The curlion::SocketFactory and curlion::SocketWatcher implementation with boost::asio::ip::tcp::socket.
+ */
 class AsioSocketManager : public SocketFactory, public SocketWatcher {
 public:
     explicit AsioSocketManager(boost::asio::io_service& io_service) : io_service_(io_service) {
