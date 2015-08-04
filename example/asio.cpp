@@ -199,17 +199,22 @@ int main(int argc, const char * argv[]) {
     auto timer = std::make_shared<AsioTimer>(io_service);
     auto socket_manager = std::make_shared<AsioSocketManager>(io_service);
     
-    ConnectionManager connectionManager(socket_manager, timer);
+    ConnectionManager connection_manager(socket_manager, timer);
     
     auto connection = std::make_shared<HttpConnection>(socket_manager);
     connection->SetUrl("http://www.google.com");
     connection->SetVerbose(true);
     connection->SetFinishedCallback([ &work ](Connection& connection) {
-        std::cout << connection.GetResponseBody() << std::endl;
+        if (connection.GetResult() == CURLE_OK) {
+            std::cout << connection.GetResponseBody() << std::endl;
+        }
+        else {
+            std::cout << "Connection failed with result: " << connection.GetResult() << std::endl;
+        }
         work.reset();
     });
     
-    connectionManager.StartConnection(connection);
+    connection_manager.StartConnection(connection);
     
     io_service.run();
     
