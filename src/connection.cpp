@@ -117,7 +117,7 @@ void Connection::DidFinish(CURLcode result) {
     result_ = result;
     
     if (finished_callback_) {
-        finished_callback_(*this);
+        finished_callback_(this->shared_from_this());
     }
 }
 
@@ -167,7 +167,7 @@ bool Connection::ReadBody(char* body, std::size_t expected_length, std::size_t& 
     bool is_succeeded = false;
     
     if (read_body_callback_) {
-        is_succeeded = read_body_callback_(*this, body, expected_length, actual_length);
+        is_succeeded = read_body_callback_(this->shared_from_this(), body, expected_length, actual_length);
     }
     else {
     
@@ -204,7 +204,7 @@ bool Connection::SeekBody(SeekOrigin origin, curl_off_t offset) {
     if (read_body_callback_) {
         
         if (seek_body_callback_) {
-            is_succeeded = seek_body_callback_(*this, origin, offset);
+            is_succeeded = seek_body_callback_(this->shared_from_this(), origin, offset);
         }
     }
     else {
@@ -244,7 +244,7 @@ bool Connection::WriteHeader(const char* header, std::size_t length) {
     bool is_succeeded = false;
     
     if (write_header_callback_) {
-        is_succeeded = write_header_callback_(*this, header, length);
+        is_succeeded = write_header_callback_(this->shared_from_this(), header, length);
     }
     else {
         response_header_.append(header, length);
@@ -264,7 +264,7 @@ bool Connection::WriteBody(const char* body, std::size_t length) {
     bool is_succeeded = false;
 
     if (write_body_callback_) {
-        is_succeeded = write_body_callback_(*this, body, length);
+        is_succeeded = write_body_callback_(this->shared_from_this(), body, length);
     }
     else {
         response_body_.append(body, length);

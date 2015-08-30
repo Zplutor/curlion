@@ -34,7 +34,7 @@ class SocketFactory;
  
  This is a encapsulation against libcurl's easy handle.
  */
-class Connection {
+class Connection : public std::enable_shared_from_this<Connection> {
 public:
     /**
      Original position for seeking request body.
@@ -68,7 +68,11 @@ public:
      @return 
         Whether the seeking is succeeded.
      */
-    typedef std::function<bool(Connection& connection, SeekOrigin origin, curl_off_t offset)> SeekBodyCallback;
+    typedef std::function<
+        bool(const std::shared_ptr<Connection>& connection,
+             SeekOrigin origin,
+             curl_off_t offset)
+    > SeekBodyCallback;
 
     /**
      Calback prototype for reading request body.
@@ -89,7 +93,7 @@ public:
      @return Whether the reading is succeeded. Return false would abort the connection.
      */
     typedef std::function<
-        bool(Connection& connection,
+        bool(const std::shared_ptr<Connection>& connection,
              char* body,
              std::size_t expected_length,
              std::size_t& actual_length)
@@ -110,7 +114,11 @@ public:
      @return 
         Whether the writing is succeeded. Return false would abort the connection.
      */
-    typedef std::function<bool(Connection& connection, const char* header, std::size_t length)> WriteHeaderCallback;
+    typedef std::function<
+        bool(const std::shared_ptr<Connection>& connection,
+             const char* header,
+             std::size_t length)
+    > WriteHeaderCallback;
     
     /**
      Callback prototype for writing response body.
@@ -127,7 +135,11 @@ public:
      @return 
         Whether the writing is succeeded. Return false would abort the connection.
      */
-    typedef std::function<bool(Connection& connection, const char* body, std::size_t length)> WriteBodyCallback;
+    typedef std::function<
+        bool(const std::shared_ptr<Connection>& connection,
+             const char* body,
+             std::size_t length)
+    > WriteBodyCallback;
     
     /**
      Callback prototype for connection finished.
@@ -135,7 +147,7 @@ public:
      @param connection
         The Connection instance.
      */
-    typedef std::function<void(Connection& connection)> FinishedCallback;
+    typedef std::function<void(const std::shared_ptr<Connection>& connection)> FinishedCallback;
     
 public:
     /**

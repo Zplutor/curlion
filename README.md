@@ -72,13 +72,13 @@ Secondly, create a HttpConnection with instance of SocketFactory, and configurat
 
 	auto connection = std::make_shared<curlion::HttpConnection>(socket_factory);
 	connection->SetUrl("http://www.google.com");
-	connection->SetFinishedCallback([ ](Connection& connection) {
+	connection->SetFinishedCallback([ ](const std::shared_ptr<Connection>& connection) {
 	
-        if (connection.GetResult() == CURLE_OK) {
-            std::cout << connection.GetResponseBody() << std::endl;
+        if (connection->GetResult() == CURLE_OK) {
+            std::cout << connection->GetResponseBody() << std::endl;
         }
         else {
-            std::cout << "Connection failed with result: " << connection.GetResult() << std::endl;
+            std::cout << "Connection failed with result: " << connection->GetResult() << std::endl;
         }
     });
 
