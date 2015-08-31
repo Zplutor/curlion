@@ -43,7 +43,7 @@ public:
     void AddRequestHeader(const std::string& field, const std::string& value);
     
     /**
-     Set whether to auto-redirct when received HTTP 3xx response.
+     Set whether to auto-redirect when received HTTP 3xx response.
      
      Use SetMaxAutoRedirectCount to limit the redirction count.
      
@@ -64,6 +64,7 @@ public:
      Get HTTP response headers.
      
      This is a wrapper method for GetResponseHeader, parses the raw header string to key value pairs.
+     Note that when auto-redirection is enabled, all headers in multiple responses would be contained.
      */
     const std::multimap<std::string, std::string>& GetResponseHeaders() const;
     
