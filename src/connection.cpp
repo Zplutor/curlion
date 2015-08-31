@@ -31,6 +31,8 @@ Connection::Connection(const std::shared_ptr<SocketFactory>& socket_factory) :
     curl_easy_setopt(handle_, CURLOPT_HEADERDATA, this);
     curl_easy_setopt(handle_, CURLOPT_WRITEFUNCTION, CurlWriteBodyCallback);
     curl_easy_setopt(handle_, CURLOPT_WRITEDATA, this);
+    curl_easy_setopt(handle_, CURLOPT_XFERINFOFUNCTION, CurlProgressCallback);
+    curl_easy_setopt(handle_, CURLOPT_XFERINFODATA, this);
 }
 
 
@@ -82,6 +84,9 @@ void Connection::SetReceiveBody(bool receive_body) {
     curl_easy_setopt(handle_, CURLOPT_NOBODY, ! receive_body);
 }
 
+void Connection::SetEnableProgress(bool enable) {
+    curl_easy_setopt(handle_, CURLOPT_NOPROGRESS, ! enable);
+}
 
 void Connection::SetConnectTimeoutInMilliseconds(long milliseconds) {
     curl_easy_setopt(handle_, CURLOPT_CONNECTTIMEOUT_MS, milliseconds);
@@ -275,6 +280,34 @@ bool Connection::WriteBody(const char* body, std::size_t length) {
 
     return is_succeeded;
 }
+    
+    
+bool Connection::Progress(curl_off_t total_download,
+                          curl_off_t current_download,
+                          curl_off_t total_upload,
+                          curl_off_t current_upload) {
+    
+    WriteConnectionLog(this) << "Progress meter. "
+        << current_download << " downloaded, " << total_download << " expected; "
+        << current_upload << " uploaded, " << total_upload << " expected.";
+    
+    bool is_succeeded = true;
+    
+    if (progress_callback_) {
+        
+        is_succeeded = progress_callback_(this->shared_from_this(),
+                                          total_download,
+                                          current_download,
+                                          total_upload,
+                                          current_upload);
+    }
+    
+    if (! is_succeeded) {
+        WriteConnectionLog(this) << "Aborted by progress meter.";
+    }
+    
+    return is_succeeded;
+}
 
 
 curl_socket_t Connection::CurlOpenSocketCallback(void* clientp, curlsocktype socket_type, struct curl_sockaddr* address) {
@@ -325,6 +358,17 @@ size_t Connection::CurlWriteBodyCallback(char* ptr, size_t size, size_t nmemb, v
     Connection* connection = static_cast<Connection*>(v);
     bool is_succeeded = connection->WriteBody(ptr, length);
     return is_succeeded ? length : 0;
+}
+    
+int Connection::CurlProgressCallback(void *clientp,
+                                     curl_off_t dltotal,
+                                     curl_off_t dlnow,
+                                     curl_off_t ultotal,
+                                     curl_off_t ulnow) {
+    
+    Connection* connection = static_cast<Connection*>(clientp);
+    bool is_succeeded = connection->Progress(dltotal, dlnow, ultotal, ulnow);
+    return is_succeeded ? 0 : -1;
 }
 
 }

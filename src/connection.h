@@ -142,6 +142,35 @@ public:
     > WriteBodyCallback;
     
     /**
+     Callback prototype for progress meter.
+     
+     @param connection
+        The Connection instance.
+     
+     @param total_download
+        The total number of bytes expected to be downloaded.
+     
+     @param current_download
+        The number of bytes downloaded so far.
+     
+     @param total_upload
+        The total number of bytes expected to be uploaded.
+     
+     @param current_upload
+        The number of bytes uploaded so far.
+     
+     @return
+        Return false would abort the connection.
+     */
+    typedef std::function<
+        bool(const std::shared_ptr<Connection>& connection,
+             curl_off_t total_download,
+             curl_off_t current_download,
+             curl_off_t total_upload,
+             curl_off_t current_upload)
+    > ProgressCallback;
+    
+    /**
      Callback prototype for connection finished.
      
      @param connection
@@ -233,6 +262,15 @@ public:
     void SetReceiveBody(bool receive_body);
     
     /**
+     Set whether to enable the progress meter.
+     
+     When progress meter is disalbed, the progress callback would not be called.
+     
+     The default is false.
+     */
+    void SetEnableProgress(bool enable);
+    
+    /**
      Set timeout for the connect phase.
      
      Set to 0 to switch to the default timeout 300 seconds.
@@ -291,6 +329,13 @@ public:
     }
     
     /**
+     Set callback for progress meter.
+     */
+    void SetProgressCallback(const ProgressCallback& callback) {
+        progress_callback_ = callback;
+    }
+    
+    /**
      Set callback for connection finished.
      
      Use this callback to get informed when the connection finished.
@@ -343,6 +388,11 @@ private:
     static int CurlSeekBodyCallback(void* userp, curl_off_t offset, int origin);
     static size_t CurlWriteHeaderCallback(char* buffer, size_t size, size_t nitems, void* userdata);
     static size_t CurlWriteBodyCallback(char* ptr, size_t size, size_t nmemb, void* v);
+    static int CurlProgressCallback(void *clientp,
+                                    curl_off_t dltotal,
+                                    curl_off_t dlnow,
+                                    curl_off_t ultotal,
+                                    curl_off_t ulnow);
   
     curl_socket_t OpenSocket(curlsocktype socket_type, curl_sockaddr* address);
     bool CloseSocket(curl_socket_t socket);
@@ -350,6 +400,10 @@ private:
     bool SeekBody(SeekOrigin origin, curl_off_t offset);
     bool WriteHeader(const char* header, std::size_t length);
     bool WriteBody(const char* body, std::size_t length);
+    bool Progress(curl_off_t total_download,
+                  curl_off_t current_download,
+                  curl_off_t total_upload,
+                  curl_off_t current_upload);
     
 private:
     Connection(const Connection&) = delete;
@@ -367,6 +421,7 @@ private:
     SeekBodyCallback seek_body_callback_;
     WriteHeaderCallback write_header_callback_;
     WriteBodyCallback write_body_callback_;
+    ProgressCallback progress_callback_;
     FinishedCallback finished_callback_;
     CURLcode result_;
     std::string response_header_;
