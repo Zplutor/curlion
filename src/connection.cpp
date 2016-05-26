@@ -2,6 +2,10 @@
 #include "socket_factory.h"
 #include "log.h"
 
+#ifdef WIN32
+#undef min
+#endif
+
 namespace curlion {
 
 static inline LoggerProxy WriteConnectionLog(void* connection_identifier) {
