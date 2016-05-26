@@ -354,6 +354,15 @@ public:
     }
     
     /**
+     Get the last response code.
+     
+     For HTTP, response code is the HTTP status code.
+     
+     The return value is undefined if the connection is not yet finished.
+     */
+    long GetResponseCode() const;
+    
+    /**
      Get response header.
      
      Note that empty string would be returned if a callable write header callback is set.

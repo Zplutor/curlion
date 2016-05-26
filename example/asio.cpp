@@ -219,11 +219,14 @@ int main(int argc, const char * argv[]) {
     ConnectionManager connection_manager(socket_manager, timer);
     
     auto connection = std::make_shared<HttpConnection>(socket_manager);
-    connection->SetUrl("http://www.google.com");
+    connection->SetUrl("http://www.bing.com");
     connection->SetVerbose(true);
     connection->SetFinishedCallback([ &work ](const std::shared_ptr<Connection>& connection) {
         if (connection->GetResult() == CURLE_OK) {
-            std::cout << connection->GetResponseBody() << std::endl;
+            std::cout
+                << connection->GetResponseCode() << std::endl
+                << connection->GetResponseHeader() << std::endl
+                << connection->GetResponseBody() << std::endl;
         }
         else {
             std::cout << "Connection failed with result: " << connection->GetResult() << std::endl;

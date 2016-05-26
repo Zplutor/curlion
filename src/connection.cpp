@@ -126,6 +126,14 @@ void Connection::DidFinish(CURLcode result) {
     }
 }
 
+    
+long Connection::GetResponseCode() const {
+    
+    long response_code = 0;
+    curl_easy_getinfo(handle_, CURLINFO_RESPONSE_CODE, &response_code);
+    return response_code;
+}
+    
 
 curl_socket_t Connection::OpenSocket(curlsocktype socket_type, curl_sockaddr* address) {
     
