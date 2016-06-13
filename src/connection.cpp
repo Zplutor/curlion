@@ -13,19 +13,11 @@ static inline LoggerProxy WriteConnectionLog(void* connection_identifier) {
 }
     
     
-Connection::Connection(const std::shared_ptr<SocketFactory>& socket_factory) :
-    socket_factory_(socket_factory),
+Connection::Connection() :
     request_body_read_length_(0),
     result_(CURL_LAST) {
     
     handle_ = curl_easy_init();
-        
-    if (socket_factory_ != nullptr) {
-        curl_easy_setopt(handle_, CURLOPT_OPENSOCKETFUNCTION, CurlOpenSocketCallback);
-        curl_easy_setopt(handle_, CURLOPT_OPENSOCKETDATA, this);
-        curl_easy_setopt(handle_, CURLOPT_CLOSESOCKETFUNCTION, CurlCloseSocketCallback);
-        curl_easy_setopt(handle_, CURLOPT_CLOSESOCKETDATA, this);
-    }
         
     curl_easy_setopt(handle_, CURLOPT_READFUNCTION, CurlReadBodyCallback);
     curl_easy_setopt(handle_, CURLOPT_READDATA, this);
@@ -138,44 +130,6 @@ long Connection::GetResponseCode() const {
     return response_code;
 }
     
-
-curl_socket_t Connection::OpenSocket(curlsocktype socket_type, curl_sockaddr* address) {
-    
-    WriteConnectionLog(this) << "Open socket for "
-        << "type " << socket_type << "; "
-        << "address family " << address->family << ", "
-        << "socket type " << address->socktype << ", "
-        << "protocol " << address->protocol << '.';
-    
-    curl_socket_t socket = socket_factory_->Open(socket_type, address);
-    
-    if (socket != CURL_SOCKET_BAD) {
-        WriteConnectionLog(this) << "Socket(" << socket << ") is opened.";
-    }
-    else {
-        WriteConnectionLog(this) << "Open socket failed.";
-    }
-    
-    return socket;
-}
-
-
-bool Connection::CloseSocket(curl_socket_t socket) {
-    
-    WriteConnectionLog(this) << "Close socket(" << socket << ").";
-    
-    bool is_succeeded = socket_factory_->Close(socket);
-    
-    if (is_succeeded) {
-        WriteConnectionLog(this) << "Socket(" << socket << ") is closed.";
-    }
-    else {
-        WriteConnectionLog(this) << "Close socket(" << socket << ") failed.";
-    }
-    
-    return is_succeeded;
-}
-
 
 bool Connection::ReadBody(char* body, std::size_t expected_length, std::size_t& actual_length) {
     
@@ -321,17 +275,6 @@ bool Connection::Progress(curl_off_t total_download,
     return is_succeeded;
 }
 
-
-curl_socket_t Connection::CurlOpenSocketCallback(void* clientp, curlsocktype socket_type, struct curl_sockaddr* address) {
-    Connection* connection = static_cast<Connection*>(clientp);
-    return connection->OpenSocket(socket_type, address);
-}
-
-int Connection::CurlCloseSocketCallback(void* clientp, curl_socket_t socket) {
-    Connection* connection = static_cast<Connection*>(clientp);
-    bool is_succeeded = connection->CloseSocket(socket);
-    return is_succeeded ? 0 : 1;
-}
 
 size_t Connection::CurlReadBodyCallback(char* buffer, size_t size, size_t nitems, void* instream) {
     Connection* connection = static_cast<Connection*>(instream);

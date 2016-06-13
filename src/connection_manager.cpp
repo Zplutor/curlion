@@ -1,6 +1,7 @@
 #include "connection_manager.h"
 #include "connection.h"
 #include "log.h"
+#include "socket_factory.h"
 #include "socket_watcher.h"
 #include "timer.h"
 
@@ -11,8 +12,10 @@ static inline LoggerProxy WriteManagerLog(void* manager_idenditifier) {
 }
     
 
-ConnectionManager::ConnectionManager(const std::shared_ptr<SocketWatcher>& socket_watcher,
+ConnectionManager::ConnectionManager(const std::shared_ptr<SocketFactory>& socket_factory,
+                                     const std::shared_ptr<SocketWatcher>& socket_watcher,
                                      const std::shared_ptr<Timer>& timer) :
+    socket_factory_(socket_factory),
     socket_watcher_(socket_watcher),
     timer_(timer) {
     
@@ -42,6 +45,17 @@ void ConnectionManager::StartConnection(const std::shared_ptr<Connection>& conne
     
     WriteManagerLog(this) << "Start a connection(" << connection.get() << ").";
     
+    if (socket_factory_ != nullptr) {
+        curl_easy_setopt(easy_handle, CURLOPT_OPENSOCKETFUNCTION, CurlOpenSocketCallback);
+        curl_easy_setopt(easy_handle, CURLOPT_OPENSOCKETDATA, this);
+        curl_easy_setopt(easy_handle, CURLOPT_CLOSESOCKETFUNCTION, CurlCloseSocketCallback);
+        curl_easy_setopt(easy_handle, CURLOPT_CLOSESOCKETDATA, this);
+    }
+    else {
+        curl_easy_setopt(easy_handle, CURLOPT_OPENSOCKETFUNCTION, nullptr);
+        curl_easy_setopt(easy_handle, CURLOPT_CLOSESOCKETFUNCTION, nullptr);
+    }
+    
     connection->WillStart();
     
     running_connections_.insert(std::make_pair(easy_handle, connection));
@@ -65,6 +79,44 @@ void ConnectionManager::AbortConnection(const std::shared_ptr<Connection>& conne
     curl_multi_remove_handle(multi_handle_, easy_handle);
 }
 
+    
+curl_socket_t ConnectionManager::OpenSocket(curlsocktype socket_type, curl_sockaddr* address) {
+    
+    WriteManagerLog(this) << "Open socket for "
+        << "type " << socket_type << "; "
+        << "address family " << address->family << ", "
+        << "socket type " << address->socktype << ", "
+        << "protocol " << address->protocol << '.';
+    
+    curl_socket_t socket = socket_factory_->Open(socket_type, address);
+    
+    if (socket != CURL_SOCKET_BAD) {
+        WriteManagerLog(this) << "Socket(" << socket << ") is opened.";
+    }
+    else {
+        WriteManagerLog(this) << "Open socket failed.";
+    }
+    
+    return socket;
+}
+
+
+bool ConnectionManager::CloseSocket(curl_socket_t socket) {
+    
+    WriteManagerLog(this) << "Close socket(" << socket << ").";
+    
+    bool is_succeeded = socket_factory_->Close(socket);
+    
+    if (is_succeeded) {
+        WriteManagerLog(this) << "Socket(" << socket << ") is closed.";
+    }
+    else {
+        WriteManagerLog(this) << "Close socket(" << socket << ") failed.";
+    }
+    
+    return is_succeeded;
+}
+    
 
 void ConnectionManager::SetTimer(long timeout_ms) {
     
@@ -173,6 +225,22 @@ void ConnectionManager::CheckFinishedConnections() {
     }
 }
 
+    
+curl_socket_t ConnectionManager::CurlOpenSocketCallback(void* clientp,
+                                                        curlsocktype socket_type,
+                                                        curl_sockaddr* address) {
+    
+    ConnectionManager* manager = static_cast<ConnectionManager*>(clientp);
+    return manager->OpenSocket(socket_type, address);
+}
+    
+    
+int ConnectionManager::CurlCloseSocketCallback(void* clientp, curl_socket_t socket) {
+    
+    ConnectionManager* manager = static_cast<ConnectionManager*>(clientp);
+    return manager->CloseSocket(socket);
+}
+    
 
 int ConnectionManager::CurlTimerCallback(CURLM* multi_handle, long timeout_ms, void* user_pointer) {
     

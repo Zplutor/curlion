@@ -7,8 +7,7 @@ static std::string MakeHttpHeaderLine(const std::string& field, const std::strin
 static std::vector<std::string> SplitString(const std::string& string, const std::string& delimiter);
 
 
-HttpConnection::HttpConnection(const std::shared_ptr<SocketFactory>& socket_factory) :
-    Connection(socket_factory),
+HttpConnection::HttpConnection() :
     request_headers_(nullptr),
     has_parsed_response_headers_(false) {
     

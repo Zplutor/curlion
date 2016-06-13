@@ -7,6 +7,7 @@
 namespace curlion {
 
 class Connection;
+class SocketFactory;
 class SocketWatcher;
 class Timer;
 
@@ -26,7 +27,8 @@ public:
     /**
      Construct the ConnectionManager instance.
      */
-    ConnectionManager(const std::shared_ptr<SocketWatcher>& socket_watcher,
+    ConnectionManager(const std::shared_ptr<SocketFactory>& socket_factory,
+                      const std::shared_ptr<SocketWatcher>& socket_watcher,
                       const std::shared_ptr<Timer>& timer);
     
     /**
@@ -65,12 +67,17 @@ public:
     }
     
 private:
+    static curl_socket_t CurlOpenSocketCallback(void* clientp, curlsocktype socket_type, curl_sockaddr* address);
+    static int CurlCloseSocketCallback(void* clientp, curl_socket_t socket);
     static int CurlTimerCallback(CURLM* multi_handle, long timeout_ms, void* user_pointer);
     static int CurlSocketCallback(CURL* easy_handle,
                                   curl_socket_t socket,
                                   int action,
                                   void* user_pointer,
                                   void* socket_pointer);
+    
+    curl_socket_t OpenSocket(curlsocktype socket_type, curl_sockaddr* address);
+    bool CloseSocket(curl_socket_t socket);
     
     void SetTimer(long timeout_ms);
     void TimerTriggered();
@@ -85,6 +92,7 @@ private:
     ConnectionManager& operator=(const ConnectionManager&) = delete;
     
 private:
+    std::shared_ptr<SocketFactory> socket_factory_;
     std::shared_ptr<SocketWatcher> socket_watcher_;
     std::shared_ptr<Timer> timer_;
     

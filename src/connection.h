@@ -7,8 +7,6 @@
 
 namespace curlion {
 
-class SocketFactory;
-
 /**
  Connection used to send request to remote peer and receive its response.
  It supports variety of network protocols, such as SMTP, IMAP and HTTP etc.
@@ -181,11 +179,8 @@ public:
 public:
     /**
      Construct the Connection instance.
-     
-     Connection needs an optional SocketFactory to open and close sockets. In most case,
-     a nullptr is used, indicating that use the default internal behaviour.
      */
-    explicit Connection(const std::shared_ptr<SocketFactory>& socket_factory);
+    Connection();
     
     /**
      Destruct the Connection instance.
@@ -398,8 +393,6 @@ protected:
     virtual void ResetState();
     
 private:
-    static curl_socket_t CurlOpenSocketCallback(void* clientp, curlsocktype socket_type, curl_sockaddr* address);
-    static int CurlCloseSocketCallback(void* clientp, curl_socket_t socket);
     static size_t CurlReadBodyCallback(char* buffer, size_t size, size_t nitems, void* instream);
     static int CurlSeekBodyCallback(void* userp, curl_off_t offset, int origin);
     static size_t CurlWriteHeaderCallback(char* buffer, size_t size, size_t nitems, void* userdata);
@@ -410,8 +403,6 @@ private:
                                     curl_off_t ultotal,
                                     curl_off_t ulnow);
   
-    curl_socket_t OpenSocket(curlsocktype socket_type, curl_sockaddr* address);
-    bool CloseSocket(curl_socket_t socket);
     bool ReadBody(char* body, std::size_t expected_length, std::size_t& actual_length);
     bool SeekBody(SeekOrigin origin, curl_off_t offset);
     bool WriteHeader(const char* header, std::size_t length);
@@ -427,7 +418,6 @@ private:
 
 private:
     CURL* handle_;
-    std::shared_ptr<SocketFactory> socket_factory_;
     
     std::string request_body_;
     std::size_t request_body_read_length_;

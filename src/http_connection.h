@@ -16,7 +16,7 @@ public:
     /**
      Construct the HttpConnection instance.
      */
-    HttpConnection(const std::shared_ptr<SocketFactory>& socket_factory);
+    HttpConnection();
     
     /**
      Destruct the HttpConnection instance.

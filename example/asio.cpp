@@ -216,9 +216,9 @@ int main(int argc, const char * argv[]) {
     auto timer = std::make_shared<AsioTimer>(io_service);
     auto socket_manager = std::make_shared<AsioSocketManager>(io_service);
     
-    ConnectionManager connection_manager(socket_manager, timer);
+    ConnectionManager connection_manager(socket_manager, socket_manager, timer);
     
-    auto connection = std::make_shared<HttpConnection>(socket_manager);
+    auto connection = std::make_shared<HttpConnection>();
     connection->SetUrl("http://www.bing.com");
     connection->SetVerbose(true);
     connection->SetFinishedCallback([ &work ](const std::shared_ptr<Connection>& connection) {

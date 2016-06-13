@@ -59,18 +59,17 @@ The code shows that the interfaces are simple, and they may not be difficult to 
 
 After implementing event-driven mechanism, all of the reset are very simple. Here are steps for accomplishing a HTTP request.
 
-Firstly, create a ConnectionManager with instances of Timer and SocketWatcher:
+Firstly, create a ConnectionManager with instances of Timer, SocketWatcher and SocketFactory:
 
     auto timer = std::make_shared<MyTimer>();
     auto socket_watcher = std::make_shared<MySocketWatcher>();
+    auto socket_factory = std::make_shared<MySocketFactory>();
     
-    curlion::ConnectionManager connection_manager(socket_watcher, timer);
+    curlion::ConnectionManager connection_manager(socket_factory, socket_watcher, timer);
 
-Secondly, create a HttpConnection with instance of SocketFactory, and configurate its properties:
+Secondly, create a HttpConnection, and configurate its properties:
 
-	auto socket_factory = std::make_shared<MySocketFactory>();
-
-	auto connection = std::make_shared<curlion::HttpConnection>(socket_factory);
+	auto connection = std::make_shared<curlion::HttpConnection>();
 	connection->SetUrl("http://www.google.com");
 	connection->SetFinishedCallback([ ](const std::shared_ptr<Connection>& connection) {
 	
