@@ -156,6 +156,8 @@ void ConnectionManager::CheckFinishedConnections() {
         
         if (msg->msg == CURLMSG_DONE) {
             
+            curl_multi_remove_handle(multi_handle_, msg->easy_handle);
+            
             auto iterator = running_connections_.find(msg->easy_handle);
             if (iterator != running_connections_.end()) {
                 
