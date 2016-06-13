@@ -32,7 +32,7 @@ ConnectionManager::~ConnectionManager() {
 
 void ConnectionManager::StartConnection(const std::shared_ptr<Connection>& connection) {
     
-    CURL* easy_handle = connection->handle_;
+    CURL* easy_handle = connection->GetHandle();
     
     auto iterator = running_connections_.find(easy_handle);
     if (iterator != running_connections_.end()) {
@@ -51,7 +51,7 @@ void ConnectionManager::StartConnection(const std::shared_ptr<Connection>& conne
 
 void ConnectionManager::AbortConnection(const std::shared_ptr<Connection>& connection) {
     
-    CURL* easy_handle = connection->handle_;
+    CURL* easy_handle = connection->GetHandle();
     
     auto iterator = running_connections_.find(easy_handle);
     if (iterator == running_connections_.end()) {

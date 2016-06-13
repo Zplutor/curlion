@@ -24,7 +24,7 @@ HttpConnection::~HttpConnection() {
 
 
 void HttpConnection::SetUsePost(bool use_post) {
-    curl_easy_setopt(handle_, CURLOPT_POST, use_post);
+    curl_easy_setopt(GetHandle(), CURLOPT_POST, use_post);
 }
 
 
@@ -41,7 +41,7 @@ void HttpConnection::SetRequestHeaders(const std::multimap<std::string, std::str
         request_headers_ = curl_slist_append(request_headers_, each_header_line.c_str());
     }
     
-    curl_easy_setopt(handle_, CURLOPT_HTTPHEADER, request_headers_);
+    curl_easy_setopt(GetHandle(), CURLOPT_HTTPHEADER, request_headers_);
 }
 
 
@@ -50,17 +50,17 @@ void HttpConnection::AddRequestHeader(const std::string& field, const std::strin
     std::string header_line = MakeHttpHeaderLine(field, value);
     request_headers_ = curl_slist_append(request_headers_, header_line.c_str());
     
-    curl_easy_setopt(handle_, CURLOPT_HTTPHEADER, request_headers_);
+    curl_easy_setopt(GetHandle(), CURLOPT_HTTPHEADER, request_headers_);
 }
 
 
 void HttpConnection::SetAutoRedirect(bool auto_redirect) {
-    curl_easy_setopt(handle_, CURLOPT_FOLLOWLOCATION, auto_redirect);
+    curl_easy_setopt(GetHandle(), CURLOPT_FOLLOWLOCATION, auto_redirect);
 }
 
 
 void HttpConnection::SetMaxAutoRedirectCount(long count) {
-    curl_easy_setopt(handle_, CURLOPT_MAXREDIRS, count);
+    curl_easy_setopt(GetHandle(), CURLOPT_MAXREDIRS, count);
 }
 
 

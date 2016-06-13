@@ -57,6 +57,13 @@ public:
      */
     void AbortConnection(const std::shared_ptr<Connection>& connection);
     
+    /**
+     Get the underlying multi handle.
+     */
+    CURLM* GetHandle() const {
+        return multi_handle_;
+    }
+    
 private:
     static int CurlTimerCallback(CURLM* multi_handle, long timeout_ms, void* user_pointer);
     static int CurlSocketCallback(CURL* easy_handle,

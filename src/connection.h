@@ -382,6 +382,13 @@ public:
         return response_body_;
     }
     
+    /**
+     Get the underlying easy handle.
+     */
+    CURL* GetHandle() const {
+        return handle_;
+    }
+    
 //Methods be called from ConnectionManager.
 private:
     void WillStart();
@@ -418,10 +425,8 @@ private:
     Connection(const Connection&) = delete;
     Connection& operator=(const Connection&) = delete;
 
-protected:
-    CURL* handle_;
-    
 private:
+    CURL* handle_;
     std::shared_ptr<SocketFactory> socket_factory_;
     
     std::string request_body_;
