@@ -88,9 +88,9 @@ void Connection::SetConnectTimeoutInMilliseconds(long milliseconds) {
     curl_easy_setopt(handle_, CURLOPT_CONNECTTIMEOUT_MS, milliseconds);
 }
 
-void Connection::SetIdleTimeoutInSeconds(long seconds) {
-    curl_easy_setopt(handle_, CURLOPT_LOW_SPEED_TIME, seconds);
-    curl_easy_setopt(handle_, CURLOPT_LOW_SPEED_LIMIT, seconds == 0 ? 0 : 1);
+void Connection::SetLowSpeedTimeout(long low_speed_in_bytes_per_seond, long timeout_in_seconds) {
+    curl_easy_setopt(handle_, CURLOPT_LOW_SPEED_LIMIT, low_speed_in_bytes_per_seond);
+    curl_easy_setopt(handle_, CURLOPT_LOW_SPEED_TIME, timeout_in_seconds);
 }
 
 void Connection::SetTimeoutInMilliseconds(long milliseconds) {

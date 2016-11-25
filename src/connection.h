@@ -275,9 +275,25 @@ public:
     /**
      Set timeout for how long the connection can be idle.
      
-     The default is no timeout. Set 0 to turn off the timeout.
+     This option is a shortcut to SetLowSpeedTimeout, which low speed is set to 1.
      */
-    void SetIdleTimeoutInSeconds(long seconds);
+    void SetIdleTimeoutInSeconds(long seconds) {
+        SetLowSpeedTimeout(1, seconds);
+    }
+    
+    /**
+     Set timeout for low speed transfer.
+     
+     If the average transfer speed is below specified speed for specified duration, the connection is 
+     considered timeout.
+     
+     The default is no timeout. Set 0 to any one of the parameters to turn off the timeout.
+     
+     This option is equal to set both CURLOPT_LOW_SPEED_LIMIT and CURLOPT_LOW_SPEED_TIME options 
+     to libcurl. Note that the timeout may be broken in some cases due to internal implementation 
+     of libcurl.
+     */
+    void SetLowSpeedTimeout(long low_speed_in_bytes_per_seond, long timeout_in_seconds);
     
     /**
      Set timeout for the whole connection.
