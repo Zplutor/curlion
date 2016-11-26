@@ -55,7 +55,7 @@ Besides, another interface SocketFactory can also be implemented if socket's ope
 	
 The code shows that the interfaces are simple, and they may not be difficult to understand. However, a lot of details are omitted. The actual implementation may be complex or not, depending on what mechanism is choosen.
 
-### The rest
+### Use curlion
 
 After implementing event-driven mechanism, all of the reset are very simple. Here are steps for accomplishing a HTTP request.
 
@@ -90,7 +90,7 @@ When connection is finished, the callback set by SetFinishedCallback method will
 
 ## Example
 
-Currently, there is an example shows how to use curlion cooperating with boost.asio. More examples will be add in the future.
+There are some examples show how to use curlion to cooperate with different kinds of event-driven mechanism in example directory.
 
 ## Documentation
 
