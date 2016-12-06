@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23BF63021DF6EDF500F0C1AA /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23BF63011DF6EDF500F0C1AA /* libcurl.dylib */; };
 		B765A98E1DE807B30030BC7A /* connection_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9831DE807B30030BC7A /* connection_manager.cpp */; };
 		B765A98F1DE807B30030BC7A /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9851DE807B30030BC7A /* connection.cpp */; };
 		B765A9901DE807B30030BC7A /* http_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9881DE807B30030BC7A /* http_connection.cpp */; };
 		B765A9931DE807C50030BC7A /* asio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9921DE807C50030BC7A /* asio.cpp */; };
-		B765A9961DE80FBF0030BC7A /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B765A9951DE80FBF0030BC7A /* libcurl.tbd */; };
 		B765A99B1DE810B40030BC7A /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B765A9971DE810270030BC7A /* libboost_system.a */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +28,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		23BF63011DF6EDF500F0C1AA /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		B765A9781DE807590030BC7A /* example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = example; sourceTree = BUILT_PRODUCTS_DIR; };
 		B765A9831DE807B30030BC7A /* connection_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = connection_manager.cpp; path = ../../src/connection_manager.cpp; sourceTree = "<group>"; };
 		B765A9841DE807B30030BC7A /* connection_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = connection_manager.h; path = ../../src/connection_manager.h; sourceTree = "<group>"; };
@@ -41,9 +42,7 @@
 		B765A98C1DE807B30030BC7A /* socket_watcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = socket_watcher.h; path = ../../src/socket_watcher.h; sourceTree = "<group>"; };
 		B765A98D1DE807B30030BC7A /* timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timer.h; path = ../../src/timer.h; sourceTree = "<group>"; };
 		B765A9921DE807C50030BC7A /* asio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = asio.cpp; path = ../asio.cpp; sourceTree = "<group>"; };
-		B765A9951DE80FBF0030BC7A /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		B765A9971DE810270030BC7A /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../third_party/boost/lib/libboost_system.a; sourceTree = "<group>"; };
-		B765A9991DE810680030BC7A /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../third_party/boost/lib/libboost_system.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +50,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23BF63021DF6EDF500F0C1AA /* libcurl.dylib in Frameworks */,
 				B765A99B1DE810B40030BC7A /* libboost_system.a in Frameworks */,
-				B765A9961DE80FBF0030BC7A /* libcurl.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,9 +105,8 @@
 		B765A9941DE80FBF0030BC7A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B765A9991DE810680030BC7A /* libboost_system.dylib */,
+				23BF63011DF6EDF500F0C1AA /* libcurl.dylib */,
 				B765A9971DE810270030BC7A /* libboost_system.a */,
-				B765A9951DE80FBF0030BC7A /* libcurl.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
