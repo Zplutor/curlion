@@ -69,10 +69,12 @@ public:
     const std::multimap<std::string, std::string>& GetResponseHeaders() const;
     
 protected:
-    void ResetState() override;
+    void ResetResponseStates() override;
+    void ResetOptionResources() override;
     
 private:
     void ParseResponseHeaders() const;
+    void ReleaseRequestHeaders();
     
 private:
     curl_slist* request_headers_;

@@ -190,6 +190,14 @@ public:
     virtual ~Connection();
     
     /**
+     Reset all options to default.
+     
+     This method only resets curl options, therefore callback options would not be reset. Calling this
+     method while the connection is running takes no effect.
+     */
+    void ResetOptions();
+    
+    /**
      Set whether to print detail information about connection to stdout.
      
      The default is false.
@@ -406,7 +414,27 @@ private:
     void DidFinish(CURLcode result);
     
 protected:
-    virtual void ResetState();
+    /**
+     Reset response states to default.
+     
+     This method is called when the connection needs to reset all response states, such as reseting 
+     the content of response body to empty. This usually happens when the connection restarts.
+     
+     Derived classes can override this method the reset their response states, and they must call 
+     the same method of base class.
+     */
+    virtual void ResetResponseStates();
+    
+    /**
+     Reset resources associated with curl options to default.
+     
+     This method is called when the connection needs to reset all option resources, such as reseting 
+     the content of request body to empty.
+     
+     Derived classes can override this method to reset their option resources, and they must
+     call the same method of base class.
+     */
+    virtual void ResetOptionResources();
     
 private:
     static size_t CurlReadBodyCallback(char* buffer, size_t size, size_t nitems, void* instream);
@@ -419,6 +447,8 @@ private:
                                     curl_off_t ultotal,
                                     curl_off_t ulnow);
   
+    void SetInitialOptions();
+    
     bool ReadBody(char* body, std::size_t expected_length, std::size_t& actual_length);
     bool SeekBody(SeekOrigin origin, curl_off_t offset);
     bool WriteHeader(const char* header, std::size_t length);
@@ -434,6 +464,7 @@ private:
 
 private:
     CURL* handle_;
+    bool is_running_;
     
     std::string request_body_;
     std::size_t request_body_read_length_;

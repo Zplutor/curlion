@@ -14,11 +14,23 @@ static inline LoggerProxy WriteConnectionLog(void* connection_identifier) {
     
     
 Connection::Connection() :
+    is_running_(false),
     request_body_read_length_(0),
     result_(CURL_LAST) {
     
     handle_ = curl_easy_init();
-        
+    SetInitialOptions();
+}
+
+
+Connection::~Connection() {
+    
+    curl_easy_cleanup(handle_);
+}
+
+    
+void Connection::SetInitialOptions() {
+    
     curl_easy_setopt(handle_, CURLOPT_READFUNCTION, CurlReadBodyCallback);
     curl_easy_setopt(handle_, CURLOPT_READDATA, this);
     curl_easy_setopt(handle_, CURLOPT_SEEKFUNCTION, CurlSeekBodyCallback);
@@ -30,13 +42,24 @@ Connection::Connection() :
     curl_easy_setopt(handle_, CURLOPT_XFERINFOFUNCTION, CurlProgressCallback);
     curl_easy_setopt(handle_, CURLOPT_XFERINFODATA, this);
 }
-
-
-Connection::~Connection() {
     
-    curl_easy_cleanup(handle_);
+    
+void Connection::ResetOptions() {
+    
+    if (! is_running_) {
+        curl_easy_reset(handle_);
+        SetInitialOptions();
+        ResetOptionResources();
+    }
 }
-
+    
+    
+void Connection::ResetOptionResources() {
+    
+    request_body_.clear();
+    request_body_read_length_ = 0;
+}
+    
 
 void Connection::SetVerbose(bool verbose) {
     curl_easy_setopt(handle_, CURLOPT_VERBOSE, verbose);
@@ -100,11 +123,12 @@ void Connection::SetTimeoutInMilliseconds(long milliseconds) {
 
 void Connection::WillStart() {
     
-    ResetState();
+    is_running_ = true;
+    ResetResponseStates();
 }
 
 
-void Connection::ResetState() {
+void Connection::ResetResponseStates() {
     
     request_body_read_length_ = 0;
     result_ = CURL_LAST;
@@ -115,6 +139,7 @@ void Connection::ResetState() {
 
 void Connection::DidFinish(CURLcode result) {
     
+    is_running_ = false;
     result_ = result;
     
     if (finished_callback_) {

@@ -15,10 +15,7 @@ HttpConnection::HttpConnection() :
 
 
 HttpConnection::~HttpConnection() {
-    
-    if (request_headers_ != nullptr) {
-        curl_slist_free_all(request_headers_);
-    }
+    ReleaseRequestHeaders();
 }
 
 
@@ -29,10 +26,7 @@ void HttpConnection::SetUsePost(bool use_post) {
 
 void HttpConnection::SetRequestHeaders(const std::multimap<std::string, std::string>& headers) {
     
-    if (request_headers_ != nullptr) {
-        curl_slist_free_all(request_headers_);
-        request_headers_ = nullptr;
-    }
+    ReleaseRequestHeaders();
     
     for (auto& each_header : headers) {
         
@@ -91,12 +85,29 @@ void HttpConnection::ParseResponseHeaders() const {
 }
 
 
-void HttpConnection::ResetState() {
+void HttpConnection::ResetResponseStates() {
     
-    Connection::ResetState();
+    Connection::ResetResponseStates();
     
     has_parsed_response_headers_ = false;
     response_headers_.clear();
+}
+    
+    
+void HttpConnection::ResetOptionResources() {
+    
+    Connection::ResetOptionResources();
+    
+    ReleaseRequestHeaders();
+}
+    
+    
+void HttpConnection::ReleaseRequestHeaders() {
+    
+    if (request_headers_ != nullptr) {
+        curl_slist_free_all(request_headers_);
+        request_headers_ = nullptr;
+    }
 }
 
 
