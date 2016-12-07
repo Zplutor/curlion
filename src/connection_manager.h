@@ -2,6 +2,7 @@
 
 #include <map>
 #include <memory>
+#include <system_error>
 #include <curl/curl.h>
 
 namespace curlion {
@@ -39,25 +40,40 @@ public:
     ~ConnectionManager();
     
     /**
-     Start to run the connection. 
+     Start a connection.
+     
+     @param connection
+         The connection to start. Must not be nullptr.
+     
+     @return
+         Return an error on failure.
      
      This method will retain the connection, until it is finished or aborted.
      
      It is OK to call this method with the same Connection instance multiple times.
      Nothing changed if the connection is running; Otherwise it will be restarted.
      */
-    void StartConnection(const std::shared_ptr<Connection>& connection);
+    std::error_condition StartConnection(const std::shared_ptr<Connection>& connection);
     
     /**
-     Abort the running connection. 
+     Abort a running connection.
      
-     Note that when aborted by this method, the connection's finished callback 
-     would not be triggered.
+     @param connection
+         The connection to abort. Must not be nullptr.
+     
+     @return
+         Return an error on failure.
+     
+     Note that the connection's finished callback would not be triggered when it is
+     aborted.
      
      Is is OK to call this methods while the connection is not running, nothing
-     will be changed.
+     would happend.
+     
+     If this method fails, the connection is in an unknown condition, it should be 
+     abondaned and never be reused again.
      */
-    void AbortConnection(const std::shared_ptr<Connection>& connection);
+    std::error_condition AbortConnection(const std::shared_ptr<Connection>& connection);
     
     /**
      Get the underlying multi handle.

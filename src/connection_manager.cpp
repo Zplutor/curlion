@@ -1,5 +1,6 @@
 #include "connection_manager.h"
 #include "connection.h"
+#include "error.h"
 #include "log.h"
 #include "socket_factory.h"
 #include "socket_watcher.h"
@@ -33,14 +34,16 @@ ConnectionManager::~ConnectionManager() {
 }
 
 
-void ConnectionManager::StartConnection(const std::shared_ptr<Connection>& connection) {
+std::error_condition ConnectionManager::StartConnection(const std::shared_ptr<Connection>& connection) {
+    
+    std::error_condition error;
     
     CURL* easy_handle = connection->GetHandle();
     
     auto iterator = running_connections_.find(easy_handle);
     if (iterator != running_connections_.end()) {
         WriteManagerLog(this) << "Try to start an already running connection(" << connection.get() << "). Ignored.";
-        return;
+        return error;
     }
     
     WriteManagerLog(this) << "Start a connection(" << connection.get() << ").";
@@ -58,25 +61,42 @@ void ConnectionManager::StartConnection(const std::shared_ptr<Connection>& conne
     
     connection->WillStart();
     
-    running_connections_.insert(std::make_pair(easy_handle, connection));
-    curl_multi_add_handle(multi_handle_, easy_handle);
+    iterator = running_connections_.insert(std::make_pair(easy_handle, connection)).first;
+    
+    CURLMcode result = curl_multi_add_handle(multi_handle_, easy_handle);
+    if (result != CURLM_OK) {
+        WriteManagerLog(this) << "curl_multi_add_handle failed with result: " << result << '.';
+        running_connections_.erase(iterator);
+        error.assign(result, CurlMultiErrorCategory());
+    }
+    
+    return error;
 }
 
 
-void ConnectionManager::AbortConnection(const std::shared_ptr<Connection>& connection) {
+std::error_condition ConnectionManager::AbortConnection(const std::shared_ptr<Connection>& connection) {
+    
+    std::error_condition error;
     
     CURL* easy_handle = connection->GetHandle();
     
     auto iterator = running_connections_.find(easy_handle);
     if (iterator == running_connections_.end()) {
         WriteManagerLog(this) << "Try to abort a not running connection(" << easy_handle << "). Ignored.";
-        return;
+        return error;
     }
     
     WriteManagerLog(this) << "Abort a connection(" << easy_handle << ").";
     
-    running_connections_.erase(easy_handle);
-    curl_multi_remove_handle(multi_handle_, easy_handle);
+    running_connections_.erase(iterator);
+    
+    CURLMcode result = curl_multi_remove_handle(multi_handle_, easy_handle);
+    if (result != CURLM_OK) {
+        WriteManagerLog(this) << "curl_multi_remove_handle failed with result: " << result << '.';
+        error.assign(result, CurlMultiErrorCategory());
+    }
+    
+    return error;
 }
 
     

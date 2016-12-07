@@ -2,6 +2,7 @@
 
 #include "connection.h"
 #include "connection_manager.h"
+#include "error.h"
 #include "http_connection.h"
 #include "socket_factory.h"
 #include "socket_watcher.h"

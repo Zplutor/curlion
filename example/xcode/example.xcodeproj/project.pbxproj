@@ -43,6 +43,7 @@
 		B765A98D1DE807B30030BC7A /* timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timer.h; path = ../../src/timer.h; sourceTree = "<group>"; };
 		B765A9921DE807C50030BC7A /* asio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = asio.cpp; path = ../asio.cpp; sourceTree = "<group>"; };
 		B765A9971DE810270030BC7A /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../third_party/boost/lib/libboost_system.a; sourceTree = "<group>"; };
+		B765A99C1DF704F20030BC7A /* error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = error.h; path = ../../src/error.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +91,7 @@
 				B765A98B1DE807B30030BC7A /* socket_factory.h */,
 				B765A98C1DE807B30030BC7A /* socket_watcher.h */,
 				B765A98D1DE807B30030BC7A /* timer.h */,
+				B765A99C1DF704F20030BC7A /* error.h */,
 			);
 			name = curlion;
 			sourceTree = "<group>";
