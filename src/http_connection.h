@@ -6,6 +6,8 @@
 
 namespace curlion {
 
+class HttpForm;
+    
 /**
  HttpConnection used to send HTTP request and received HTTP response.
  
@@ -43,6 +45,13 @@ public:
     void AddRequestHeader(const std::string& field, const std::string& value);
     
     /**
+     Set a request form for HTTP POST.
+     
+     The default is nullptr.
+     */
+    void SetRequestForm(const std::shared_ptr<HttpForm>& form);
+    
+    /**
      Set whether to auto-redirect when received HTTP 3xx response.
      
      Use SetMaxAutoRedirectCount to limit the redirction count.
@@ -78,6 +87,7 @@ private:
     
 private:
     curl_slist* request_headers_;
+    std::shared_ptr<HttpForm> form_;
     mutable bool has_parsed_response_headers_;
     mutable std::multimap<std::string, std::string> response_headers_;
 };

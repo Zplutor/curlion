@@ -1,5 +1,6 @@
 #include "http_connection.h"
 #include <vector>
+#include "http_form.h"
 
 namespace curlion {
 
@@ -46,7 +47,20 @@ void HttpConnection::AddRequestHeader(const std::string& field, const std::strin
     curl_easy_setopt(GetHandle(), CURLOPT_HTTPHEADER, request_headers_);
 }
 
+    
+void HttpConnection::SetRequestForm(const std::shared_ptr<HttpForm>& form) {
+    
+    form_ = form;
+    
+    curl_httppost* handle = nullptr;
+    if (form_ != nullptr) {
+        handle = form_->GetHandle();
+    }
 
+    curl_easy_setopt(GetHandle(), CURLOPT_HTTPPOST, handle);
+}
+
+    
 void HttpConnection::SetAutoRedirect(bool auto_redirect) {
     curl_easy_setopt(GetHandle(), CURLOPT_FOLLOWLOCATION, auto_redirect);
 }
@@ -99,6 +113,7 @@ void HttpConnection::ResetOptionResources() {
     Connection::ResetOptionResources();
     
     ReleaseRequestHeaders();
+    form_.reset();
 }
     
     

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		23BF63021DF6EDF500F0C1AA /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23BF63011DF6EDF500F0C1AA /* libcurl.dylib */; };
+		23FBCF621DFFF243007056CE /* http_form.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FBCF611DFFF243007056CE /* http_form.cpp */; };
 		B765A98E1DE807B30030BC7A /* connection_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9831DE807B30030BC7A /* connection_manager.cpp */; };
 		B765A98F1DE807B30030BC7A /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9851DE807B30030BC7A /* connection.cpp */; };
 		B765A9901DE807B30030BC7A /* http_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9881DE807B30030BC7A /* http_connection.cpp */; };
@@ -29,6 +30,8 @@
 
 /* Begin PBXFileReference section */
 		23BF63011DF6EDF500F0C1AA /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
+		23BF63031DF83FF200F0C1AA /* http_form.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = http_form.h; path = ../../src/http_form.h; sourceTree = "<group>"; };
+		23FBCF611DFFF243007056CE /* http_form.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = http_form.cpp; path = ../../src/http_form.cpp; sourceTree = "<group>"; };
 		B765A9781DE807590030BC7A /* example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = example; sourceTree = BUILT_PRODUCTS_DIR; };
 		B765A9831DE807B30030BC7A /* connection_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = connection_manager.cpp; path = ../../src/connection_manager.cpp; sourceTree = "<group>"; };
 		B765A9841DE807B30030BC7A /* connection_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = connection_manager.h; path = ../../src/connection_manager.h; sourceTree = "<group>"; };
@@ -92,6 +95,8 @@
 				B765A98C1DE807B30030BC7A /* socket_watcher.h */,
 				B765A98D1DE807B30030BC7A /* timer.h */,
 				B765A99C1DF704F20030BC7A /* error.h */,
+				23BF63031DF83FF200F0C1AA /* http_form.h */,
+				23FBCF611DFFF243007056CE /* http_form.cpp */,
 			);
 			name = curlion;
 			sourceTree = "<group>";
@@ -173,6 +178,7 @@
 				B765A9901DE807B30030BC7A /* http_connection.cpp in Sources */,
 				B765A9931DE807C50030BC7A /* asio.cpp in Sources */,
 				B765A98E1DE807B30030BC7A /* connection_manager.cpp in Sources */,
+				23FBCF621DFFF243007056CE /* http_form.cpp in Sources */,
 				B765A98F1DE807B30030BC7A /* connection.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

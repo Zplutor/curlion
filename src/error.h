@@ -22,9 +22,22 @@ inline const std::error_category& CurlMultiErrorCategory() {
     return category;
 }
     
+
+inline const std::error_category& CurlFormErrorCategory() {
     
-inline const std::error_condition MakeCurlMultiError(CURLMcode value) {
-    return std::error_condition(static_cast<int>(value), CurlMultiErrorCategory());
+    class CurlFormErrorCategory : public std::error_category {
+    public:
+        const char* name() const _NOEXCEPT override {
+            return "CURLFORMcode";
+        }
+        
+        std::string message(int condition) const override {
+            return std::string();
+        }
+    };
+    
+    static CurlFormErrorCategory category;
+    return category;
 }
 
     
