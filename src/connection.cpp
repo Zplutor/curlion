@@ -58,6 +58,14 @@ void Connection::ResetOptionResources() {
     
     request_body_.clear();
     request_body_read_length_ = 0;
+    
+    read_body_callback_ = nullptr;
+    seek_body_callback_ = nullptr;
+    write_header_callback_ = nullptr;
+    write_body_callback_ = nullptr;
+    progress_callback_ = nullptr;
+    debug_callback_ = nullptr;
+    finished_callback_ = nullptr;
 }
     
 
@@ -120,6 +128,19 @@ void Connection::SetTimeoutInMilliseconds(long milliseconds) {
     curl_easy_setopt(handle_, CURLOPT_TIMEOUT_MS, milliseconds);
 }
 
+void Connection::SetDebugCallback(const DebugCallback& callback) {
+    
+    debug_callback_ = callback;
+    
+    if (debug_callback_ != nullptr) {
+        curl_easy_setopt(handle_, CURLOPT_DEBUGFUNCTION, CurlDebugCallback);
+        curl_easy_setopt(handle_, CURLOPT_DEBUGDATA, this);
+    }
+    else {
+        curl_easy_setopt(handle_, CURLOPT_DEBUGFUNCTION, nullptr);
+        curl_easy_setopt(handle_, CURLOPT_DEBUGDATA, nullptr);
+    }
+}
 
 void Connection::WillStart() {
     
@@ -301,6 +322,14 @@ bool Connection::Progress(curl_off_t total_download,
 }
 
 
+void Connection::Debug(curlion::Connection::DebugDataType data_type, const char *data, std::size_t size) {
+    
+    if (debug_callback_ != nullptr) {
+        debug_callback_(shared_from_this(), data_type, data, size);
+    }
+}
+
+    
 size_t Connection::CurlReadBodyCallback(char* buffer, size_t size, size_t nitems, void* instream) {
     Connection* connection = static_cast<Connection*>(instream);
     std::size_t actual_read_length = 0;
@@ -349,6 +378,42 @@ int Connection::CurlProgressCallback(void *clientp,
     Connection* connection = static_cast<Connection*>(clientp);
     bool is_succeeded = connection->Progress(dltotal, dlnow, ultotal, ulnow);
     return is_succeeded ? 0 : -1;
+}
+    
+int Connection::CurlDebugCallback(CURL* handle,
+                                  curl_infotype type,
+                                  char* data,
+                                  size_t size,
+                                  void* userptr) {
+    
+    DebugDataType data_type = DebugDataType::Information;
+    switch (type) {
+        case CURLINFO_TEXT:
+            break;
+        case CURLINFO_HEADER_IN:
+            data_type = DebugDataType::ReceivedHeader;
+            break;
+        case CURLINFO_HEADER_OUT:
+            data_type = DebugDataType::SentHeader;
+        case CURLINFO_DATA_IN:
+            data_type = DebugDataType::ReceivedBody;
+            break;
+        case CURLINFO_DATA_OUT:
+            data_type = DebugDataType::SentBody;
+            break;
+        case CURLINFO_SSL_DATA_IN:
+            data_type = DebugDataType::ReceivedSslData;
+            break;
+        case CURLINFO_SSL_DATA_OUT:
+            data_type = DebugDataType::SentSslData;
+            break;
+        default:
+            break;
+    }
+    
+    Connection* connection = static_cast<Connection*>(userptr);
+    connection->Debug(data_type, data, size);
+    return 0;
 }
 
 }

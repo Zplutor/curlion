@@ -169,6 +169,69 @@ public:
     > ProgressCallback;
     
     /**
+     Debug data type in debug callback.
+     */
+    enum class DebugDataType {
+        
+        /**
+         The data is informational text.
+         */
+        Information,
+        
+        /**
+         The data is header received from the peer.
+         */
+        ReceivedHeader,
+        
+        /**
+         The data is header sent to the peer.
+         */
+        SentHeader,
+        
+        /**
+         The data is body received from the peer.
+         */
+        ReceivedBody,
+        
+        /**
+         The data is body sent to the peer.
+         */
+        SentBody,
+        
+        /**
+         The data is SSL data received from the peer.
+         */
+        ReceivedSslData,
+        
+        /**
+         The data is SSL data sent to the peer.
+         */
+        SentSslData,
+    };
+    
+    /**
+     Callback prototype for receiving debug information.
+     
+     @param connection
+         The connection instance.
+     
+     @param data_type
+         The type of data.
+     
+     @param data
+         The debug information data.
+     
+     @param size
+         The size of data.
+     */
+    typedef std::function<
+        void(const std::shared_ptr<Connection>& connection,
+             DebugDataType data_type,
+             const char* data,
+             std::size_t size)
+    > DebugCallback;
+    
+    /**
      Callback prototype for connection finished.
      
      @param connection
@@ -192,13 +255,12 @@ public:
     /**
      Reset all options to default.
      
-     This method only resets curl options, therefore callback options would not be reset. Calling this
-     method while the connection is running takes no effect.
+     Calling this method while the connection is running takes no effect.
      */
     void ResetOptions();
     
     /**
-     Set whether to print detail information about connection to stdout.
+     Set whether to print detail information about connection to stderr.
      
      The default is false.
      */
@@ -355,6 +417,14 @@ public:
     }
     
     /**
+     Set callback for receiving debug information.
+     
+     SetVerbose method must be called with true to enable the debug callback. If a non-null callback
+     is set as the debug callback, all verbose output would be sent to debug callback instead of stderr.
+     */
+    void SetDebugCallback(const DebugCallback& callback);
+    
+    /**
      Set callback for connection finished.
      
      Use this callback to get informed when the connection finished.
@@ -446,6 +516,11 @@ private:
                                     curl_off_t dlnow,
                                     curl_off_t ultotal,
                                     curl_off_t ulnow);
+    static int CurlDebugCallback(CURL* handle,
+                                 curl_infotype type,
+                                 char* data,
+                                 size_t size,
+                                 void* userptr);
   
     void SetInitialOptions();
     
@@ -457,6 +532,7 @@ private:
                   curl_off_t current_download,
                   curl_off_t total_upload,
                   curl_off_t current_upload);
+    void Debug(DebugDataType data_type, const char* data, std::size_t size);
     
 private:
     Connection(const Connection&) = delete;
@@ -473,6 +549,7 @@ private:
     WriteHeaderCallback write_header_callback_;
     WriteBodyCallback write_body_callback_;
     ProgressCallback progress_callback_;
+    DebugCallback debug_callback_;
     FinishedCallback finished_callback_;
     CURLcode result_;
     std::string response_header_;
