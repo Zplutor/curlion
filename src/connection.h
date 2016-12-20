@@ -12,21 +12,20 @@ namespace curlion {
  Connection used to send request to remote peer and receive its response.
  It supports variety of network protocols, such as SMTP, IMAP and HTTP etc.
  
- Using Connection is simple, just follow steps below:
+ Before start a connection, some setter methods must be call to set required 
+ options, sush as SetUrl to set the URL connect to, and SetRequestBody to set
+ the body sent to remote peer.
  
- Firstly, after creating an instance, call setter methods to configurate
- whatever needed, typically SetUrl and SetFinishedCallback.
+ There are two ways to start a connection. The simplest one is to call 
+ Connection::Start, this method would not return until the connection finishes.
  
- And then call ConnectionManager::StartConnection to start it. 
- 
- While the connection is running, some callback will get called, like read 
- body callback and write body callback, to gain data to send or return data 
- that received. Especially, the finished callback got called once the connection
- is done.
- 
- Finally, call getter methods to get whatever wanted, typically GetResult.
- 
- Connection is not thread safe.
+ The more complicated way is to call ConnectionManager::StartConnection to start
+ a non-blocking connection. You should call SetFinishedCallback to set a callback
+ in order to receive a notification when the connection finishes.
+
+ No mater which way you choose, when a connection is finish, you can call getter 
+ methods to get the result, such as GetResult to get the result code, and 
+ GetResponseBody to get the body received from remote peer.
  
  For HTTP, there is a derived class HttpConnection provides setter and getter
  methods specific to HTTP.
