@@ -253,6 +253,15 @@ public:
     virtual ~Connection();
     
     /**
+     Start the connection in blocking manner.
+     
+     This method does not return a value, you should call GetResult method to get the result.
+     If the connection is already started, this method takes no effects.
+     Use ConnectionManager to start connections if you wish a non-blocking manner.
+     */
+    void Start();
+    
+    /**
      Reset all options to default.
      
      Calling this method while the connection is running takes no effect.

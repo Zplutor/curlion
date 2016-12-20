@@ -44,6 +44,16 @@ void Connection::SetInitialOptions() {
 }
     
     
+void Connection::Start() {
+    
+    if (! is_running_) {
+        WillStart();
+        CURLcode result = curl_easy_perform(handle_);
+        DidFinish(result);
+    }
+}
+    
+    
 void Connection::ResetOptions() {
     
     if (! is_running_) {
