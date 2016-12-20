@@ -104,12 +104,12 @@ Secondly, create a `curlion::HttpConnection`, and configurate its options:
 	connection->SetUrl("http://www.qq.com");
 	connection->SetFinishedCallback([](const std::shared_ptr<Connection>& connection) {
 	
-            if (connection->GetResult() == CURLE_OK) {
-                std::cout << connection->GetResponseBody() << std::endl;
-            }
-            else {
-                std::cout << "Connection failed with result: " << connection->GetResult() << std::endl;
-            }
+	    if (connection->GetResult() == CURLE_OK) {
+	        std::cout << connection->GetResponseBody() << std::endl;
+	    }
+	    else {
+	        std::cout << "Connection failed with result: " << connection->GetResult() << std::endl;
+	    }
 	});
 
 Finally, start the connection just with a single method call:
