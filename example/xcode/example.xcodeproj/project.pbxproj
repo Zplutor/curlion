@@ -7,17 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		23BF63021DF6EDF500F0C1AA /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23BF63011DF6EDF500F0C1AA /* libcurl.dylib */; };
-		23FBCF621DFFF243007056CE /* http_form.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FBCF611DFFF243007056CE /* http_form.cpp */; };
-		B765A98E1DE807B30030BC7A /* connection_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9831DE807B30030BC7A /* connection_manager.cpp */; };
-		B765A98F1DE807B30030BC7A /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9851DE807B30030BC7A /* connection.cpp */; };
-		B765A9901DE807B30030BC7A /* http_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9881DE807B30030BC7A /* http_connection.cpp */; };
-		B765A9931DE807C50030BC7A /* asio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9921DE807C50030BC7A /* asio.cpp */; };
-		B765A99B1DE810B40030BC7A /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B765A9971DE810270030BC7A /* libboost_system.a */; };
+		2322EF771E08F6BC0027823E /* asio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9921DE807C50030BC7A /* asio.cpp */; };
+		2322EF781E08F6BC0027823E /* connection_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9831DE807B30030BC7A /* connection_manager.cpp */; };
+		2322EF791E08F6BC0027823E /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9851DE807B30030BC7A /* connection.cpp */; };
+		2322EF7A1E08F6BC0027823E /* http_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9881DE807B30030BC7A /* http_connection.cpp */; };
+		2322EF7B1E08F6BC0027823E /* http_form.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FBCF611DFFF243007056CE /* http_form.cpp */; };
+		2322EF7C1E08F8910027823E /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23BF63011DF6EDF500F0C1AA /* libcurl.dylib */; };
+		2322EF7D1E08F8D40027823E /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B765A9971DE810270030BC7A /* libboost_system.a */; };
+		2322EF891E08F9240027823E /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23BF63011DF6EDF500F0C1AA /* libcurl.dylib */; };
+		2322EF8B1E08F9360027823E /* easy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2322EF8A1E08F9360027823E /* easy.cpp */; };
+		2322EF8C1E08FACC0027823E /* connection_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9831DE807B30030BC7A /* connection_manager.cpp */; };
+		2322EF8E1E08FACC0027823E /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9851DE807B30030BC7A /* connection.cpp */; };
+		2322EF911E08FACC0027823E /* http_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B765A9881DE807B30030BC7A /* http_connection.cpp */; };
+		2322EF991E08FACC0027823E /* http_form.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FBCF611DFFF243007056CE /* http_form.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B765A9761DE807590030BC7A /* CopyFiles */ = {
+		2322EF6E1E08F63C0027823E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		2322EF801E08F9120027823E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -29,10 +44,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2322EF701E08F63C0027823E /* asio */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = asio; sourceTree = BUILT_PRODUCTS_DIR; };
+		2322EF821E08F9120027823E /* easy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = easy; sourceTree = BUILT_PRODUCTS_DIR; };
+		2322EF8A1E08F9360027823E /* easy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = easy.cpp; path = ../easy.cpp; sourceTree = "<group>"; };
 		23BF63011DF6EDF500F0C1AA /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		23BF63031DF83FF200F0C1AA /* http_form.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = http_form.h; path = ../../src/http_form.h; sourceTree = "<group>"; };
 		23FBCF611DFFF243007056CE /* http_form.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = http_form.cpp; path = ../../src/http_form.cpp; sourceTree = "<group>"; };
-		B765A9781DE807590030BC7A /* example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = example; sourceTree = BUILT_PRODUCTS_DIR; };
 		B765A9831DE807B30030BC7A /* connection_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = connection_manager.cpp; path = ../../src/connection_manager.cpp; sourceTree = "<group>"; };
 		B765A9841DE807B30030BC7A /* connection_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = connection_manager.h; path = ../../src/connection_manager.h; sourceTree = "<group>"; };
 		B765A9851DE807B30030BC7A /* connection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = connection.cpp; path = ../../src/connection.cpp; sourceTree = "<group>"; };
@@ -50,12 +67,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B765A9751DE807590030BC7A /* Frameworks */ = {
+		2322EF6D1E08F63C0027823E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23BF63021DF6EDF500F0C1AA /* libcurl.dylib in Frameworks */,
-				B765A99B1DE810B40030BC7A /* libboost_system.a in Frameworks */,
+				2322EF7C1E08F8910027823E /* libcurl.dylib in Frameworks */,
+				2322EF7D1E08F8D40027823E /* libboost_system.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2322EF7F1E08F9120027823E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2322EF891E08F9240027823E /* libcurl.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,7 +100,8 @@
 		B765A9791DE807590030BC7A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B765A9781DE807590030BC7A /* example */,
+				2322EF701E08F63C0027823E /* asio */,
+				2322EF821E08F9120027823E /* easy */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				B765A9921DE807C50030BC7A /* asio.cpp */,
+				2322EF8A1E08F9360027823E /* easy.cpp */,
 			);
 			name = example;
 			sourceTree = "<group>";
@@ -121,21 +148,38 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B765A9771DE807590030BC7A /* example */ = {
+		2322EF6F1E08F63C0027823E /* asio */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B765A97F1DE807590030BC7A /* Build configuration list for PBXNativeTarget "example" */;
+			buildConfigurationList = 2322EF741E08F63C0027823E /* Build configuration list for PBXNativeTarget "asio" */;
 			buildPhases = (
-				B765A9741DE807590030BC7A /* Sources */,
-				B765A9751DE807590030BC7A /* Frameworks */,
-				B765A9761DE807590030BC7A /* CopyFiles */,
+				2322EF6C1E08F63C0027823E /* Sources */,
+				2322EF6D1E08F63C0027823E /* Frameworks */,
+				2322EF6E1E08F63C0027823E /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = example;
-			productName = example;
-			productReference = B765A9781DE807590030BC7A /* example */;
+			name = asio;
+			productName = asio;
+			productReference = 2322EF701E08F63C0027823E /* asio */;
+			productType = "com.apple.product-type.tool";
+		};
+		2322EF811E08F9120027823E /* easy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2322EF861E08F9120027823E /* Build configuration list for PBXNativeTarget "easy" */;
+			buildPhases = (
+				2322EF7E1E08F9120027823E /* Sources */,
+				2322EF7F1E08F9120027823E /* Frameworks */,
+				2322EF801E08F9120027823E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = easy;
+			productName = easy;
+			productReference = 2322EF821E08F9120027823E /* easy */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -147,9 +191,11 @@
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Zplutor;
 				TargetAttributes = {
-					B765A9771DE807590030BC7A = {
-						CreatedOnToolsVersion = 8.1;
-						ProvisioningStyle = Automatic;
+					2322EF6F1E08F63C0027823E = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					2322EF811E08F9120027823E = {
+						CreatedOnToolsVersion = 6.1.1;
 					};
 				};
 			};
@@ -165,27 +211,88 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B765A9771DE807590030BC7A /* example */,
+				2322EF6F1E08F63C0027823E /* asio */,
+				2322EF811E08F9120027823E /* easy */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B765A9741DE807590030BC7A /* Sources */ = {
+		2322EF6C1E08F63C0027823E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B765A9901DE807B30030BC7A /* http_connection.cpp in Sources */,
-				B765A9931DE807C50030BC7A /* asio.cpp in Sources */,
-				B765A98E1DE807B30030BC7A /* connection_manager.cpp in Sources */,
-				23FBCF621DFFF243007056CE /* http_form.cpp in Sources */,
-				B765A98F1DE807B30030BC7A /* connection.cpp in Sources */,
+				2322EF771E08F6BC0027823E /* asio.cpp in Sources */,
+				2322EF781E08F6BC0027823E /* connection_manager.cpp in Sources */,
+				2322EF791E08F6BC0027823E /* connection.cpp in Sources */,
+				2322EF7A1E08F6BC0027823E /* http_connection.cpp in Sources */,
+				2322EF7B1E08F6BC0027823E /* http_form.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2322EF7E1E08F9120027823E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2322EF8C1E08FACC0027823E /* connection_manager.cpp in Sources */,
+				2322EF8E1E08FACC0027823E /* connection.cpp in Sources */,
+				2322EF911E08FACC0027823E /* http_connection.cpp in Sources */,
+				2322EF991E08FACC0027823E /* http_form.cpp in Sources */,
+				2322EF8B1E08F9360027823E /* easy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		2322EF751E08F63C0027823E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/zephyryu/Projects/curlion/example/third_party/boost/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2322EF761E08F63C0027823E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/zephyryu/Projects/curlion/example/third_party/boost/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		2322EF871E08F9120027823E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2322EF881E08F9120027823E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		B765A97D1DE807590030BC7A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -226,6 +333,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../library/boost/include,
+					../../src,
+				);
+				LIBRARY_SEARCH_PATHS = ../library/boost/binary;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -267,53 +381,43 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../library/boost/include,
+					../../src,
+				);
+				LIBRARY_SEARCH_PATHS = ../library/boost/binary;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
 			name = Release;
 		};
-		B765A9801DE807590030BC7A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					../library/boost/include,
-					../../src,
-				);
-				LIBRARY_SEARCH_PATHS = ../library/boost/binary;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		B765A9811DE807590030BC7A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					../library/boost/include,
-					../../src,
-				);
-				LIBRARY_SEARCH_PATHS = ../library/boost/binary;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2322EF741E08F63C0027823E /* Build configuration list for PBXNativeTarget "asio" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2322EF751E08F63C0027823E /* Debug */,
+				2322EF761E08F63C0027823E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		2322EF861E08F9120027823E /* Build configuration list for PBXNativeTarget "easy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2322EF871E08F9120027823E /* Debug */,
+				2322EF881E08F9120027823E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		B765A9731DE807590030BC7A /* Build configuration list for PBXProject "example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B765A97D1DE807590030BC7A /* Debug */,
 				B765A97E1DE807590030BC7A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B765A97F1DE807590030BC7A /* Build configuration list for PBXNativeTarget "example" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B765A9801DE807590030BC7A /* Debug */,
-				B765A9811DE807590030BC7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
