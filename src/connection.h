@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <map>
 #include <memory>
 #include <string>
 #include <curl/curl.h>
@@ -298,6 +299,22 @@ public:
     void SetConnectOnly(bool connect_only);
     
     /**
+     Set custom host name to IP address resolve items to DNS cache.
+     
+     The first element of each item is a host and port pair, which must be in HOST:PORT format.
+     The second element of each item is an IP address, can be either IPv4 or IPv6 format. If IP 
+     address is empty, this item is considered to be removed from DNS cache.
+     
+     Note that resolve items are applied to DNS cache only after the connection starts. That is,
+     later set resolve items will replace earlier set items. And once an item is added to DNS cache,
+     the only way to remove it is setting another item with the same host and port, along with an 
+     empty IP address.
+     
+     This option is equal to set CURLOPT_RESOLVE option to libcurl.
+     */
+    void SetDnsResolveItems(const std::multimap<std::string, std::string>& resolve_items);
+    
+    /**
      Set whether to verify the peer's SSL certificate.
      
      The default is true.
@@ -532,6 +549,7 @@ private:
                                  void* userptr);
   
     void SetInitialOptions();
+    void ReleaseDnsResolveItems();
     
     bool ReadBody(char* body, std::size_t expected_length, std::size_t& actual_length);
     bool SeekBody(SeekOrigin origin, curl_off_t offset);
@@ -551,6 +569,7 @@ private:
     CURL* handle_;
     bool is_running_;
     
+    curl_slist* dns_resolve_items_;
     std::string request_body_;
     std::size_t request_body_read_length_;
     ReadBodyCallback read_body_callback_;

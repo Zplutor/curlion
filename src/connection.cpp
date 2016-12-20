@@ -15,6 +15,7 @@ static inline LoggerProxy WriteConnectionLog(void* connection_identifier) {
     
 Connection::Connection() :
     is_running_(false),
+    dns_resolve_items_(nullptr),
     request_body_read_length_(0),
     result_(CURL_LAST) {
     
@@ -25,6 +26,7 @@ Connection::Connection() :
 
 Connection::~Connection() {
     
+    ReleaseDnsResolveItems();
     curl_easy_cleanup(handle_);
 }
 
@@ -66,6 +68,8 @@ void Connection::ResetOptions() {
     
 void Connection::ResetOptionResources() {
     
+    ReleaseDnsResolveItems();
+    
     request_body_.clear();
     request_body_read_length_ = 0;
     
@@ -76,6 +80,15 @@ void Connection::ResetOptionResources() {
     progress_callback_ = nullptr;
     debug_callback_ = nullptr;
     finished_callback_ = nullptr;
+}
+
+    
+void Connection::ReleaseDnsResolveItems() {
+    
+    if (dns_resolve_items_ != nullptr) {
+        curl_slist_free_all(dns_resolve_items_);
+        dns_resolve_items_ = nullptr;
+    }
 }
     
 
@@ -103,7 +116,31 @@ void Connection::SetProxyAccount(const std::string& username, const std::string&
 void Connection::SetConnectOnly(bool connect_only) {
     curl_easy_setopt(handle_, CURLOPT_CONNECT_ONLY, connect_only);
 }
+    
+    
+void Connection::SetDnsResolveItems(const std::multimap<std::string, std::string>& resolve_items) {
+    
+    ReleaseDnsResolveItems();
+    
+    for (const auto& each_pair : resolve_items) {
+      
+        std::string item_string;
+        if (each_pair.second.empty()) {
+            item_string.append(1, '-');
+            item_string.append(each_pair.first);
+        }
+        else {
+            item_string.append(each_pair.first);
+            item_string.append(1, ':');
+            item_string.append(each_pair.second);
+        }
+        dns_resolve_items_ = curl_slist_append(dns_resolve_items_, item_string.c_str());
+    }
+    
+    curl_easy_setopt(handle_, CURLOPT_RESOLVE, dns_resolve_items_);
+}
 
+    
 void Connection::SetVerifyCertificate(bool verify) {
     curl_easy_setopt(handle_, CURLOPT_SSL_VERIFYPEER, verify);
 }
