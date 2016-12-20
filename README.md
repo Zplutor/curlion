@@ -6,7 +6,7 @@ Curlion is a C++ wrapper for libcurl. It provides an easy-to-use interface.
 
 ## Requirement
 
-A C++11 compatible compiler is required. IDEs listed below is supported:
+A C++11 compatible compiler is required. IDEs listed below are supported:
 
 * XCode 6.0 or greater.
 * Visual Studio 2013 or greater. 
@@ -46,9 +46,9 @@ The first interface is `curlion::Timer`, which is used to start and stop a timer
 
 	class MyTimer : public curlion::Timer {
 	public:    
-    	    void Start(long timeout_ms, const std::function<void()>& callback) override {
-    	        //Start a timer which expires in timeout_ms, then call callback to notify curlion.
-    	    }	
+	    void Start(long timeout_ms, const std::function<void()>& callback) override {
+	        //Start a timer which expires in timeout_ms, then call callback to notify curlion.
+	    }	
     
 	    void Stop() override {
 	        //Stop the timer which starts in Start method.
@@ -63,7 +63,7 @@ The second interface is `curlion::SocketWatcher`, which is used to monitor event
 	public:
 	    void Watch(curl_socket_t socket, Event event, const EventCallback& callback) override {
 	        //Start a monitor to watch the socket on event. 
-		//When the event is triggered, call callback to notify curlion.
+	        //When the event is triggered, call callback to notify curlion.
 	    }
     
 	    void StopWatching(curl_socket_t socket) override {
