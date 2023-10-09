@@ -9,7 +9,7 @@ inline const std::error_category& CurlMultiErrorCategory() {
     
     class CurlMultiErrorCategory : public std::error_category {
     public:
-        const char* name() const _NOEXCEPT override {
+        const char* name() const noexcept override {
             return "CURLMcode";
         }
         
@@ -27,7 +27,7 @@ inline const std::error_category& CurlFormErrorCategory() {
     
     class CurlFormErrorCategory : public std::error_category {
     public:
-        const char* name() const _NOEXCEPT override {
+        const char* name() const noexcept override {
             return "CURLFORMcode";
         }
         
