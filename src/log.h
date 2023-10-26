@@ -2,16 +2,16 @@
 
 /**
  CURLION_VERBOSE macro controls whether to print debug information to stdout.
- Enable it by changing its value to none zero.
+ Enable it by adding CURLION_VERBOSE=1 macro to the project.
  
  Be aware of that enabling this macro would produce much output that flood the console easily.
  So it should be used for debug purpose only. 
- 
- This macro effects only when NDEBUG macro is not defined.
  */
+#ifndef CURLION_VERBOSE
 #define CURLION_VERBOSE 0
+#endif
 
-#if (! defined(NDEBUG)) && (CURLION_VERBOSE)
+#if CURLION_VERBOSE
 #include <memory>
 #include <iostream>
 #include <sstream>
@@ -19,7 +19,7 @@
 
 namespace curlion {
     
-#if (! defined(NDEBUG)) && (CURLION_VERBOSE)
+#if CURLION_VERBOSE
     
 class Logger {
 public:
