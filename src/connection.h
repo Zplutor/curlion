@@ -468,6 +468,15 @@ public:
     }
     
     /**
+     Gets the error message.
+
+     An empty string would be returned if the connection is not yet finished, or is succeeded.
+    */
+    std::string GetError() const {
+        return error_buffer_;
+    }
+
+    /**
      Get the last response code.
      
      For HTTP, response code is the HTTP status code.
@@ -579,6 +588,7 @@ private:
     DebugCallback debug_callback_;
     FinishedCallback finished_callback_;
     CURLcode result_;
+    char error_buffer_[CURL_ERROR_SIZE]{};
     std::string response_header_;
     std::string response_body_;
     

@@ -33,6 +33,7 @@ Connection::~Connection() {
     
 void Connection::SetInitialOptions() {
     
+    curl_easy_setopt(handle_, CURLOPT_ERRORBUFFER, error_buffer_);
     curl_easy_setopt(handle_, CURLOPT_READFUNCTION, CurlReadBodyCallback);
     curl_easy_setopt(handle_, CURLOPT_READDATA, this);
     curl_easy_setopt(handle_, CURLOPT_SEEKFUNCTION, CurlSeekBodyCallback);
@@ -198,6 +199,7 @@ void Connection::WillStart() {
 
 void Connection::ResetResponseStates() {
     
+    std::memset(error_buffer_, 0, sizeof(error_buffer_));
     request_body_read_length_ = 0;
     result_ = CURL_LAST;
     response_header_.clear();
