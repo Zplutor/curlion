@@ -12,37 +12,35 @@
 #endif
 
 #if CURLION_VERBOSE
+#include <functional>
 #include <memory>
-#include <iostream>
 #include <sstream>
 #endif
 
 namespace curlion {
     
-#if CURLION_VERBOSE
-    
-class Logger {
-public:
-    void Write(const std::string& log) {
-        std::cout << "curlion> " << log << std::endl;
-    }
-};
+using Logger = std::function<void(const std::string&)>;
 
+#if CURLION_VERBOSE
+
+/**
+Sets a customized logger to replace the default logger.
+*/
+void SetLogger(Logger logger);
     
 class LoggerProxy {
 public:
-    LoggerProxy(const std::shared_ptr<Logger>& logger) : logger_(logger), stream_(new std::ostringstream()) {
-        
-    }
-    
-    LoggerProxy(LoggerProxy&& other) : logger_(std::move(other.logger_)), stream_(std::move(other.stream_)) {
+    LoggerProxy();
+
+    LoggerProxy(LoggerProxy&& other) : stream_(std::move(other.stream_)) {
         
     }
     
     ~LoggerProxy() {
         
-        if ( (logger_ != nullptr) && (stream_ != nullptr) ) {
-            logger_->Write(stream_->str());
+        if (stream_) {
+            *stream_ << std::endl;
+            WriteLog(stream_->str());
         }
     }
     
@@ -53,13 +51,15 @@ public:
     }
     
 private:
-    std::shared_ptr<Logger> logger_;
+    static void WriteLog(const std::string& log);
+
+private:
     std::unique_ptr<std::ostringstream> stream_;
 };
     
 
 inline LoggerProxy Log() {
-    return LoggerProxy(std::make_shared<Logger>());
+    return LoggerProxy();
 }
     
 #else
@@ -74,6 +74,10 @@ public:
     
 inline LoggerProxy Log() {
     return LoggerProxy();
+}
+
+inline void SetLogger(Logger logger) {
+
 }
     
 #endif
