@@ -1,5 +1,8 @@
 #pragma once
 
+#include <functional>
+#include <string>
+
 /**
  CURLION_VERBOSE macro controls whether to print debug information to stdout.
  Enable it by adding CURLION_VERBOSE=1 macro to the project.
@@ -12,7 +15,6 @@
 #endif
 
 #if CURLION_VERBOSE
-#include <functional>
 #include <memory>
 #include <sstream>
 #endif
